@@ -56,6 +56,5 @@ jobs:
       - name: Debug env
         run: |
           echo "FEISHU_WEBHOOK=$FEISHU_WEBHOOK"
-        with:
           commit_message: "自动签到更新 [skip ci]"
           file_pattern: 'index.md log.md'
