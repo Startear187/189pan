@@ -322,6 +322,8 @@ def main():
     print(f"- **账户数量**: {len(accounts)} 个")
     print()
 
+    all_results = []
+
     # 处理每个账户
     for i, (username, password) in enumerate(accounts, 1):
         account_id = f"账户{i}"
@@ -345,6 +347,17 @@ def main():
                     print(f"  - 🎉 第{j}次: {clean_result}")
                 else:
                     print(f"  - ❌ 第{j}次: {clean_result}")
+        result_string = (
+            f"{account_id} 状态汇总：\n"
+            f"- 登录：{results['login']}\n"
+            f"- 签到：{results['sign_in']}\n"
+            f"- 抽奖：\n" + "\n".join([f"  - 第{i+1}次：{r}" for i, r in enumerate(results['draws'])])
+        )
+        all_results.append(result_string)
+        # 在 main() 函数的末尾添加：
+        send_feishu_msg("\n\n---\n\n".join(all_results))
+
+
 
         print()
 
@@ -358,8 +371,8 @@ def main():
     print(f"- **运行时长**: {duration.total_seconds():.2f} 秒")
     print()
     print("✅ **所有账户处理完成！**")
+    send_feishu_msg("\n\n---\n\n".join(all_results))
 
-send_feishu_msg(result_string)
 
 if __name__ == "__main__":
     main()
