@@ -46,3 +46,19 @@ jobs:
         with:
           commit_message: "自动签到更新 [skip ci]"
           file_pattern: 'index.md log.md'
+              env:
+      FEISHU_WEBHOOK: "${{ secrets.FEISHU_WEBHOOK }}"
+      FEISHU_SECRET: "${{ secrets.FEISHU_SECRET }}"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Debug env
+        run: |
+          echo "FEISHU_WEBHOOK=$FEISHU_WEBHOOK"
+      - name: Run script
+        run: python your_script.py
