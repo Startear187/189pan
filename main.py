@@ -6,6 +6,7 @@ import hashlib
 import rsa
 import requests
 import os
+import hmac
 from datetime import datetime
 from typing import List, Dict, Optional, Tuple
 from dotenv import load_dotenv
@@ -43,6 +44,30 @@ class Config:
         "Accept-Encoding": "gzip, deflate",
     }
 
+
+
+
+def send_feishu_msg(content):
+    webhook = os.getenv("FEISHU_WEBHOOK")
+    secret = os.getenv("FEISHU_SECRET")
+    if not webhook:
+        print("❗ 未设置 FEISHU_WEBHOOK，跳过推送")
+        return
+    timestamp = str(int(time.time()))
+    headers = {"Content-Type": "application/json"}
+    if secret:
+        string_to_sign = f"{timestamp}\n{secret}"
+        sign = base64.b64encode(
+            hmac.new(secret.encode(), string_to_sign.encode(), hashlib.sha256).digest()
+        ).decode()
+        payload = {"timestamp": timestamp, "sign": sign, "msg_type": "text", "content": {"text": content}}
+    else:
+        payload = {"msg_type": "text", "content": {"text": content}}
+    try:
+        resp = requests.post(webhook, headers=headers, data=json.dumps(payload))
+        print("✅ 飞书推送响应:", resp.status_code, resp.text)
+    except Exception as e:
+        print("❌ 飞书推送异常:", e)
 
 class CryptoUtils:
     """加密工具类"""
@@ -334,6 +359,7 @@ def main():
     print()
     print("✅ **所有账户处理完成！**")
 
+send_feishu_msg(result_string)
 
 if __name__ == "__main__":
     main()
