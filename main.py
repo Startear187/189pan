@@ -47,27 +47,37 @@ class Config:
 
 
 
-def send_feishu_msg(content):
-    webhook = os.getenv("FEISHU_WEBHOOK")
-    secret = os.getenv("FEISHU_SECRET")
+def send_dingtalk_msg(content: str):
+    webhook = os.getenv("DINGTALK_WEBHOOK")
+    secret = os.getenv("DINGTALK_SECRET")
+
     if not webhook:
-        print("❗ 未设置 FEISHU_WEBHOOK，跳过推送")
+        print("❗ 未设置 DINGTALK_WEBHOOK，跳过推送")
         return
-    timestamp = str(int(time.time()))
+
+    timestamp = str(round(time.time() * 1000))
     headers = {"Content-Type": "application/json"}
+
     if secret:
         string_to_sign = f"{timestamp}\n{secret}"
         sign = base64.b64encode(
             hmac.new(secret.encode(), string_to_sign.encode(), hashlib.sha256).digest()
         ).decode()
-        payload = {"timestamp": timestamp, "sign": sign, "msg_type": "text", "content": {"text": content}}
-    else:
-        payload = {"msg_type": "text", "content": {"text": content}}
+        webhook += f"&timestamp={timestamp}&sign={sign}"
+
+    payload = {
+        "msgtype": "text",
+        "text": {
+            "content": content
+        }
+    }
+
     try:
         resp = requests.post(webhook, headers=headers, data=json.dumps(payload))
-        print("✅ 飞书推送响应:", resp.status_code, resp.text)
+        print("✅ 钉钉推送响应:", resp.status_code, resp.text)
     except Exception as e:
-        print("❌ 飞书推送异常:", e)
+        print("❌ 钉钉推送异常:", e)
+
 
 class CryptoUtils:
     """加密工具类"""
@@ -371,7 +381,7 @@ def main():
     print(f"- **运行时长**: {duration.total_seconds():.2f} 秒")
     print()
     print("✅ **所有账户处理完成！**")
-    send_feishu_msg("\n\n---\n\n".join(all_results))
+    send_dingtalk_msg("\n\n---\n\n".join(all_results))
 
 
 if __name__ == "__main__":
