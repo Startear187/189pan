@@ -1,7 +1,30 @@
-- 签到时间 2024-05-12 21:37:08 [![签到状态](https://github.com/y377/189pan/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/y377/189pan/actions/workflows/main.yml)
-- 开始执行帐号1
-- 登录成功
-- 已经签到过了，签到获得40M空间
-- 第1抽奖失败，可能是次数不足了
-- 第2抽奖失败，可能是次数不足了
-- 第3抽奖失败，可能是次数不足了
+- 签到时间 2025-06-13 15:42:44 [![签到状态](https://github.com/Startear187/189pan/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/Startear187/189pan/actions/workflows/main.yml)
+- # 天翼云盘自动签到抽奖程序
+- 
+- ## 执行概览
+- - **启动时间**: 2025-06-13 15:42:44
+- - **账户数量**: 2 个
+- 
+- ## 账户1
+- ### 执行结果
+- - **登录状态**: 登录成功
+- - **签到结果**: 已签到，获得92M空间
+- - **抽奖结果**:
+-   - ❌ 第1次: 抽奖失败，次数不足
+-   - ❌ 第2次: 抽奖失败，次数不足
+-   - ❌ 第3次: 抽奖失败，次数不足
+- ❗ 未设置 FEISHU_WEBHOOK，跳过推送
+- 
+- ## 账户2
+- ### 执行结果
+- - **登录状态**: 登录失败
+- - **签到结果**: 
+- ❗ 未设置 FEISHU_WEBHOOK，跳过推送
+- 
+- ---
+- ## 执行统计
+- - **结束时间**: 2025-06-13 15:43:10
+- - **运行时长**: 25.87 秒
+- 
+- ✅ **所有账户处理完成！**
+- ❗ 未设置 FEISHU_WEBHOOK，跳过推送
