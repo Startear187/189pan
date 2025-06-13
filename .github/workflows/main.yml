@@ -43,13 +43,9 @@ jobs:
           TYYP_PSW: ${{ secrets.TYYP_PSW }}
       - name: Git Auto Commit
         uses: stefanzweifel/git-auto-commit-action@v4.16.0
-        with:
-          commit_message: "自动签到更新 [skip ci]"
-          file_pattern: 'index.md log.md'
-              env:
-      FEISHU_WEBHOOK: "${{ secrets.FEISHU_WEBHOOK }}"
-      FEISHU_SECRET: "${{ secrets.FEISHU_SECRET }}"
-    steps:
+        env:
+          FEISHU_WEBHOOK: "${{ secrets.FEISHU_WEBHOOK }}"
+          FEISHU_SECRET: "${{ secrets.FEISHU_SECRET }}"
       - uses: actions/checkout@v3
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -60,5 +56,6 @@ jobs:
       - name: Debug env
         run: |
           echo "FEISHU_WEBHOOK=$FEISHU_WEBHOOK"
-      - name: Run script
-        run: python your_script.py
+        with:
+          commit_message: "自动签到更新 [skip ci]"
+          file_pattern: 'index.md log.md'
