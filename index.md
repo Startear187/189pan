@@ -1,14 +1,14 @@
-- 签到时间 2025-06-21 21:41:24 [![签到状态](https://github.com/Startear187/189pan/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/Startear187/189pan/actions/workflows/main.yml)
+- 签到时间 2025-06-22 11:09:25 [![签到状态](https://github.com/Startear187/189pan/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/Startear187/189pan/actions/workflows/main.yml)
 - # 天翼云盘自动签到抽奖程序
 - 
 - ## 执行概览
-- - **启动时间**: 2025-06-21 21:41:24
+- - **启动时间**: 2025-06-22 11:09:25
 - - **账户数量**: 2 个
 - 
 - ## 账户1
 - ### 执行结果
 - - **登录状态**: 登录成功
-- - **签到结果**: 已签到，获得25M空间
+- - **签到结果**: 已签到，获得76M空间
 - - **抽奖结果**:
 -   - ❌ 第1次: 抽奖失败，次数不足
 -   - ❌ 第2次: 抽奖失败，次数不足
