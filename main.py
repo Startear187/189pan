@@ -6,7 +6,7 @@ import hashlib
 import rsa
 import requests
 import os
-import hmac
+import sys
 from datetime import datetime
 from typing import List, Dict, Optional, Tuple
 from dotenv import load_dotenv
@@ -43,40 +43,6 @@ class Config:
         "Host": "m.cloud.189.cn",
         "Accept-Encoding": "gzip, deflate",
     }
-
-
-
-
-def send_dingtalk_msg(content: str):
-    webhook = os.getenv("DINGTALK_WEBHOOK")
-    secret = os.getenv("DINGTALK_SECRET")
-
-    if not webhook:
-        print("❗ 未设置 DINGTALK_WEBHOOK，跳过推送")
-        return
-
-    timestamp = str(round(time.time() * 1000))
-    headers = {"Content-Type": "application/json"}
-
-    if secret:
-        string_to_sign = f"{timestamp}\n{secret}"
-        sign = base64.b64encode(
-            hmac.new(secret.encode(), string_to_sign.encode(), hashlib.sha256).digest()
-        ).decode()
-        webhook += f"&timestamp={timestamp}&sign={sign}"
-
-    payload = {
-        "msgtype": "text",
-        "text": {
-            "content": content
-        }
-    }
-
-    try:
-        resp = requests.post(webhook, headers=headers, data=json.dumps(payload))
-        print("✅ 钉钉推送响应:", resp.status_code, resp.text)
-    except Exception as e:
-        print("❌ 钉钉推送异常:", e)
 
 
 class CryptoUtils:
@@ -305,14 +271,14 @@ def load_accounts() -> List[Tuple[str, str]]:
     if not username_env or not password_env:
         print("错误：环境变量TYYP_USERNAME或TYYP_PSW未设置")
         print("请确保.env文件存在并包含正确的配置")
-        exit(1)
+        sys.exit(1)
 
     usernames = username_env.split('&')
     passwords = password_env.split('&')
 
     if len(usernames) != len(passwords):
         print("错误：用户名和密码数量不匹配")
-        exit(1)
+        sys.exit(1)
 
     return list(zip(usernames, passwords))
 
@@ -331,8 +297,6 @@ def main():
     print(f"- **启动时间**: {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"- **账户数量**: {len(accounts)} 个")
     print()
-
-    all_results = []
 
     # 处理每个账户
     for i, (username, password) in enumerate(accounts, 1):
@@ -357,17 +321,6 @@ def main():
                     print(f"  - 🎉 第{j}次: {clean_result}")
                 else:
                     print(f"  - ❌ 第{j}次: {clean_result}")
-        result_string = (
-            f"{account_id} 状态汇总：\n"
-            f"- 登录：{results['login']}\n"
-            f"- 签到：{results['sign_in']}\n"
-            f"- 抽奖：\n" + "\n".join([f"  - 第{i+1}次：{r}" for i, r in enumerate(results['draws'])])
-        )
-        all_results.append(result_string)
-        # 在 main() 函数的末尾添加：
-        send_feishu_msg("\n\n---\n\n".join(all_results))
-
-
 
         print()
 
@@ -381,7 +334,6 @@ def main():
     print(f"- **运行时长**: {duration.total_seconds():.2f} 秒")
     print()
     print("✅ **所有账户处理完成！**")
-    send_dingtalk_msg("\n\n---\n\n".join(all_results))
 
 
 if __name__ == "__main__":
